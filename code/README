@@ -1,0 +1,210 @@
+# The code for the TT calibration, the structure as shown:
+
+WADC
+├── HV_calibration <!-- Get the HV when the abs.gain is 10^6   -->
+│   ├── DataAnalysis.cpp
+│   ├── DataAnalysis.h
+│   ├── Getdatafromdatabase.py
+│   ├── main.cpp
+│   ├── main.py
+│   ├── Makefile
+│   ├── Mystyle.cpp
+│   ├── Mystyle.h
+│   ├── mystyle.txt
+│   ├── Run_Getfigure
+│   ├── test.sh <!--run sricpt-->
+│   └── tt_calibration.csv
+├── TF1_FIT <!-- Don't fixed the Q0 and sigma0 of Bellmay function-->
+│   ├── Ana
+│   │   ├── analysis_fitparameters.py <!--Check the fit result of bellamy function-->
+│   │   ├── check_channel_fit_result.py <!--get the bad fit result if chi2perndf > 4 -->
+│   │   ├── chi2perndf.py <!--Nothing-->
+│   │   ├── Getdatafromdatabase.py<!--read the database and calculate the abs.gain, but the database deploy local computer, the relativeparametr you can get from deshan calibration root file-->
+│   │   ├── main.py
+│   │   ├── mask_correction.py <!--update the new gain factor according to last time , in order to make the abs.gain is about 10^6-->
+│   │   ├── mystyle.txt
+│   │   ├── others.py <!--nothiong file-->
+│   │   ├── Q1_compare.py <!--nothing file-->
+│   │   ├── test.sh <!--test script-->
+│   ├── Check_channel <!--check problem channel-->
+│   ├── Check_fitagain <!--Third (Final) time fit-->
+│   ├── Final <!--Second time fit-->
+│   └── Init <!--First time fit-->
+├── TF1_FIT_Fixed <!-- Fixed the Q0 and sigma0 of Bellmay function, and the value from pedestal data, the structure is the same as TF1_FIT-->
+│   ├── Ana
+│   ├── Check_channel
+│   ├── Check_fitagain
+│   ├── Final
+│   └── Init
+├── TF1_script <!--the run scripts-->
+|   ├── Check_channel.sh<!--Check for problemed channel-->
+│   ├── Gain_after_fixed.sh<!--Get the root file, pdf file and txt file after calibration, but for TF1_FIT_Fixed-->
+│   ├── Gain_after.sh <!--Get the root file, pdf file and txt file after calibration-->
+│   ├── Gain_before.sh <!--Get the root file, pdf file and txt file before calibration, this is only to care about maximum gain channel-->
+│   ├── HV_cal2.sh <!--Get the Gain vs. HV and get the HV @abs.gain is 10^6-->
+│   ├── HV_cal.sh <!--Get the result of maximum gain channel for HV calibration -->
+│   ├── Mask_updated.sh <!--Run script and update gain factor for better gain factor to nearby 10^6 -->
+│   ├── OpenMP_after_correction.sh <!--accelarate calculation -->
+│   └── tets.sh <!--test script for some special test-->
+├── TMunit_FIT <!--This is old code to fit, you can ignore them-->
+│   ├── CHECK
+│   │   ├── CHECK_loop
+│   │   └── CHECK_single
+│   ├── FINAL
+│   ├── LED
+│   └── PED
+└── TMunit_script
+FADC <!--FADC is the same structure as WADC-->
+├── HV_calibration
+├── TF1_FIT
+│   ├── Ana
+│   │  
+│   ├── Check_channel
+│   ├── Check_fitagain
+│   ├── Final
+│   └── Init
+├── TF1_script
+├── TMunit_FIT
+│   ├── CHECK
+│   │   ├── CHECK_loop
+│   │   └── CHECK_single
+│   ├── FINAL
+│   ├── LED
+│   └── PED
+└── TMunit_script
+DB <!--This is the script upload fit result them into database, you should create database and upload data,some command you can find in the code, if you are interesting, you can try-->
+├── python_mysql_create_db.py
+├── python_mysql_download.py
+├── python_mysql_fk.py
+├── python_mysql_init.py
+├── python_mysql_upload2.py
+├── python_mysql_upload.py
+├── read_data.py
+├── read_root.py
+└── test.sh
+├── create_path.py <!--create path of fit-->
+├── create_path.sh <!--modify the parameter to build different path for fit, if repeatly build, the code will rename the old one according to time-->
+
+<!--After modify code, only to-->
+<!--RUN METHODS, for example, you will analysis wall 1, CB22, ROB15 &5, WAD mode, the data "WADC_LED_800_after_cCB-22_2024-11-04_18_27_000000_hist.root", after calibration data-->
+
+- modify the parameters (WALL, CB, ROB, mode) in the "create_path.sh", and run it, you will get the new path shown as below:
+- put the data "WADC_LED_800_after_cCB-22_2024-11-04_18_27_000000_hist.root" in the path: "./WALL1/CB22/data/ROB15/WADC/correction_after/"
+- go to path : "./code/WADC/TF1_script"
+- run script "./Gain_after.sh", but you also should change parameters according to your test (WALL ,CB, ROB, FEB, mode)
+- the scirpt will fit three times, named Init, second and Final fit, and also get the analysis result as the shown:
+- if some channel can't meet requirment, the channel will shown in the file "WALL1_CB22_ROB5_WADC_channel_check_result.txt", and you only to run script "Check_channel.sh", but you should change some parameters, details shown in the lsat part.
+- another point: beacuse in order to get the abs.gain, I create the database in my local computer, but the data from deshan calibration result, if you want calculate the abs.gain, only to find the electric calibration result in deshan's result. 
+ WALL1
+    └── CB22
+        ├── data
+        │   ├── FADC
+        │   │   ├── correction_after
+        │   │   ├── correction_before
+        │   │   └── HV_cal
+        │   └── WADC
+        │       ├── correction_after
+        │       ├── correction_before
+        │       └── HV_cal
+        ├── ROB15
+        │   ├── FADC
+        │   │   ├── correction_after
+        │   │   ├── correction_before
+        │   │   └── HV_cal
+        │   └── WADC
+        │       ├── correction_after
+        │       ├── correction_before
+        │       └── HV_cal
+        └── ROB5
+            ├── FADC
+            │   ├── correction_after
+            │   ├── correction_before
+            │   └── HV_cal
+            ├── WADC
+            │   └── HV800 <!--Only important file has the comment-->
+            │       ├── WALL1_CB22_ROB5_WADC_channel_check_result.txt  <!-- problem channel-->
+            │       ├── WALL1_CB22_ROB5_WADC_Final_result.pdf <!-- channel charge spectrum-->
+            │       ├── WALL1_CB22_ROB5_WADC_Final_result.root
+            │       ├── WALL1_CB22_ROB5_WADC_Final_result.txt <!--All the final fit result, but don't include gain factor, gain factor file will generte in the correction_before-->
+            │       ├── WALL1_CB22_ROB5_WADC_fitparameters_result.pdf <!-- parameters fit result check-->
+            │       ├── WALL1_CB22_ROB5_WADC_Gain_correction_hist1D.pdf <!-- abs.gain distribution-->
+            │       ├── WALL1_CB22_ROB5_WADC_Init_result.pdf
+            │       ├── WALL1_CB22_ROB5_WADC_Init_result.root
+            │       ├── WALL1_CB22_ROB5_WADC_Init_result.txt
+            │       ├── WALL1_CB22_ROB5_WADC_mask_result.txt <!---->
+            │       ├── WALL1_CB22_ROB5_WADC_PED.root
+            │       ├── WALL1_CB22_ROB5_WADC_Q1_hist1D.pdf  <!-- Q1 distribution-->
+            │       ├── WALL1_CB22_ROB5_WADC_Q1_hist2D.pdf  <!-- Q1 distribution-->
+            │       ├── WALL1_CB22_ROB5_WADC_Second_result.pdf
+            │       ├── WALL1_CB22_ROB5_WADC_Second_result.root
+            │       └── WALL1_CB22_ROB5_WADC_Second_result.txt
+            ├── correction_before
+            └── HV_cal
+---
+- Code details:
+- In order to fit the result well, you can change some parts of code:
+-- Fit range
+    line 77-124 in HistogramProcess.cpp
+    void HistogramProcessor::GetRange(TH1F *hist, std::vector<double>& xrange) {
+        if (!hist) {
+            std::cerr << "Histogram is null!" << std::endl;
+            return;
+        }
+
+        int nBins = hist->GetNbinsX();
+        int maxBin = hist->GetMaximumBin();
+        double x_min = hist->GetXaxis()->GetBinCenter(maxBin) - 2;
+
+        double x_max = maxBin;
+    
+        for (int i = maxBin; i <=nBins; ++i) {
+            if (hist->GetBinContent(i) > 0 && hist->GetBinContent(i + 1) > 0) {
+            // if (hist->GetBinContent(i) > 0) {
+                x_max = hist->GetXaxis()->GetBinCenter(i);
+            } else {
+                break;
+            }
+        }
+        xrange.push_back(x_min);
+        xrange.push_back(x_max);
+    }
+    }
+-- Fit option
+   line ~50 in HistogramProcess.cpp
+   fitStatus = hist->Fit(func, "RBML"); // Fit and get status
+
+-- Initial parameters
+    line 59-75 : in HistogramProcess.cpp @Init
+    std::vector<double> HistogramProcessor::GetInitialParameters(const std::vector<double>& line, double numEntries) {
+        return {numEntries, line[0],  8, line[1], 4.0, 0.1, 0.1, 1.0};
+    }
+    std::vector<std::pair<double, double>> HistogramProcessor::GetParameterLimits(const std::vector<double>& line, double numEntries) {
+        return {
+            {0.95 * numEntries, 1.05 * numEntries},
+            {0.95 * line[0], 1.05 * line[0]},
+            {6,10},
+            {0.95 * line[1], 1.05 * line[1]},
+            {3.0,5.0},
+            {0.0, 1.0},
+            {0.0, 1.0},
+            {0.0, 3.0}
+        };
+    }
+
+-- Set paramerts range
+    line 65-77 in HistogramProcess.cpp @Final, @Check_fitagain, @Check_channel
+    std::vector<std::pair<double, double>> HistogramProcessor::GetParameterLimits(const std::vector<double>& line, double numEntries) {
+        // Define parameter limits
+        return {
+            {0.95 * numEntries, 1.05 * numEntries},
+            {0.95 * line[4], 1.05 * line[4]},
+            {0.95 * line[6], 1.05 * line[6]},
+            {0.95 * line[8], 1.05 * line[8]},
+            {0.95 * line[10], 1.05 * line[10]},
+            {0.95 * line[12], 1.05 * line[12]},
+            {0.95 * line[14], 1.05 * line[14]},
+            {0.95 * line[16], 1.05 * line[16]},
+        };
+    }
+
+-- last point is abot pedestal fit, including range and option, you should change the code in "GaussFitter.cpp" 

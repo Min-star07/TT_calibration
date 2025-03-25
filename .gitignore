@@ -1,0 +1,7 @@
+result/
+*.pdf
+*.root
+*.txt
+.o
+*.csv
+.vscode

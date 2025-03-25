@@ -1,0 +1,1 @@
+python Q1_compare.py --CB 22 --ROB 5 --mode FADC WADC --WALL 1 --TYPE correction_after --HV 800
