@@ -52,6 +52,19 @@ class CHECK:
         except Exception as e:
             print(f"An error occurred: {e}")
 
-
-# Example usage
-# CHECK.channel_fit_result("input_file.txt", "output_file.txt")
+    # Example usage
+    # CHECK.channel_fit_result("input_file.txt", "output_file.txt")
+    @staticmethod
+    def merge(args, infile, outfile):
+        dict_res = {}
+        try:
+            df = pd.read_csv(infile, sep="\t", header=None)
+            dict_res.update({"CB": args.CB})
+            dict_res.update({"WALL": args.WALL})
+            dict_res.update({"ROB": args.ROB})
+            dict_res.update({"channel": df[0].tolist()})
+            # df[0].to_csv(outfile, sep="\t", header=None, index=None, mode="a")
+            df = pd.DataFrame([dict_res])
+            df.to_csv(outfile, sep="\t", index=None, header=None, mode="a")
+        except:
+            print("All channels are ok!!!!!!!!!!!!!!!!!")
