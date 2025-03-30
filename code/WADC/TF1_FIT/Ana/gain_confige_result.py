@@ -27,7 +27,8 @@ def main():
     args = parser.parse_args()
 
     # Construct file paths based on input arguments
-    base_path_in_mask = f"../../../../result/CB{args.CB}/WALL{args.WALL}/ROB{args.ROB}/{args.mode}/{args.TYPE}/HV{args.HV}"
+    # base_path_in_mask = f"../../../../result/CB{args.CB}/WALL{args.WALL}/ROB{args.ROB}/{args.mode}/{args.TYPE}/HV{args.HV}"
+    base_path_in_mask = f"../../../../result/CB{args.CB}"
     mask_output_suffix = (
         f"/CB{args.CB}_WALL{args.WALL}_ROB{args.ROB}_{args.mode}_mask_result.txt"
     )

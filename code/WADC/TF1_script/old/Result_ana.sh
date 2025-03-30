@@ -34,8 +34,8 @@ sed '1d' "$config_file" | while IFS=$'\t' read -r current_WALL current_CB curren
         # Execute analysis scripts
         python fit_result_ana.py --TYPE "$type" --mode "$mode" --CB "$current_CB" --WALL "$current_WALL" --ROB "$current_ROB" --FEB "$current_FEB" --PMT "$current_PMT" --HV "$current_HV" 
         python fit_result_check.py --TYPE "$type" --mode "$mode" --CB "$current_CB" --WALL "$current_WALL" --ROB "$current_ROB" --FEB "$current_FEB" --PMT "$current_PMT" --HV "$current_HV"
-        python gain_result_ana.py --TYPE "$type" --mode "$mode" --CB "$current_CB" --WALL "$current_WALL" --ROB "$current_ROB" --FEB "$current_FEB" --PMT "$current_PMT" --HV "$current_HV" --max_channel "$current_MAX_JUNO"
         python gain_confige_result.py --TYPE "$type" --mode "$mode" --CB "$current_CB" --WALL "$current_WALL" --ROB "$current_ROB" --FEB "$current_FEB" --PMT "$current_PMT" --HV "$current_HV" 
+        python gain_result_ana.py --TYPE "$type" --mode "$mode" --CB "$current_CB" --WALL "$current_WALL" --ROB "$current_ROB" --FEB "$current_FEB" --PMT "$current_PMT" --HV "$current_HV" --max_channel "$current_MAX_JUNO"
 
     done
 
