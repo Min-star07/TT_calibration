@@ -7,56 +7,21 @@
 # Save the current directory
 original_dir=$(pwd)
 
-# Define an array of filenames
+# Check if the configuration file exists
+config_file="./configure/cb76.txt"
+# # Define an array of filenames
 filename_list=(
-    'WADC_LED_800_after_cCB-22_2024-11-04_18_27_000000_hist.root'
+"LED_Wilkinson_cCB-76_correction_before_hist.root"
 )
-
-ped=WADC_PED_800_after_cCB-22_2024-11-04_18_31_000000_hist.root
-# Define the other parameters
-
-# CB=(22)
-# FEB=(985 61)
-# type="correction_after"
-# mode="WADC"
-# wall=(1)
-
-# ########################################################################
-# # FIT process
-# ########################################################################
-# # Loop over the indices of the ROB and FEB arrays
-# for i in "${!CB[@]}"; do
-#     current_CB=${CB[$i]}
-#     current_wall=${wall[$i]}
-#     echo "Processing with CB=$current_CB"
-#     # Process each file
-#     for file in "${filename_list[@]}"; do
-#     # Change directory to the desired path for initial fitting
-#         cd ../TF1_FIT/Init || { echo "Directory not found"; exit 1; }
-#         HV=$(echo "$file" | awk -F'_' '{print $3}')
-#         echo "Processing file: $file with HV=$HV, TYPE=$type, CB=$current_CB, wall=$current_wall"
-#         pwd  # Print the current directory
-#         ################################################################################################
-#         #First time fit
-#         ##############################################################################################
-#         ./openmp_run -CB "$current_CB" -fl "$file" -fd "$ped" -v "$HV" -type "$type" -w "$current_wall"
-
-#         ################################################################################################
-#         #Second time fit
-#         ##############################################################################################
-#         cd "$original_dir" || { echo "Failed to return to original directory"; exit 1; }
-#         cd ../TF1_FIT/Final || { echo "Directory not found"; exit 1; }
-#         pwd  # Print the current directory
-#         ./openmp_run -CB "$current_CB" -fl "$file" -fd "$ped" -v "$HV" -type "$type" -w "$current_wall"
-
-#         ################################################################################################
-#         #Final time fit
-#         ##############################################################################################
-#         cd "$original_dir" || { echo "Failed to return to original directory"; exit 1; }
-#         cd ../TF1_FIT/Check_fitagain || { echo "Directory not found"; exit 1; }
-#         pwd  # Print the current directory
-#         ./openmp_run -CB "$current_CB" -fl "$file" -fd "$ped" -v "$HV" -type "$type" -w "$current_wall"
+# Define constants
+type=correction_before
+mode=WADC
 
 
-#     done
-# done
+for file in "${filename_list[@]}"; do
+    # First-time fit
+    cd "$original_dir" || { echo "Failed to return to original directory"; exit 1; }
+    # cd ../TF1_FIT/Init || { echo "Directory not found"; exit 1; }
+    ./OpenMP_FIT -path ../TF1_FIT/Init -fl $filename_list -v 1 -m -type $type
+
+done

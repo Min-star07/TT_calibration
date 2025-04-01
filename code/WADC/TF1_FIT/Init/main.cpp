@@ -107,9 +107,9 @@ int main(int argc, char **argv) {
     int ROB = atoi(ROB_default.c_str());
     int HV = atoi(HV_default.c_str());
     int WALL = atoi(wall_default.c_str());
-    string file_led = Form("../../../../result/CB%d/data/WADC/%s/%s",CB, type_default.c_str(), file_led_default.c_str());
-    string file_ped = Form("../../../../result/CB%d/data/WADC/%s/%s",CB, type_default.c_str(), file_ped_default.c_str());
-    string path = Form("../../../../result/CB%d/WALL%d/ROB%d/WADC/%s/HV%d", CB, WALL,ROB, type_default.c_str(), HV);
+    string file_led = Form("./../../../result/CB%d/data/WADC/%s/%s",CB, type_default.c_str(), file_led_default.c_str());
+    string file_ped = Form("./../../../result/CB%d/data/WADC/%s/%s",CB, type_default.c_str(), file_ped_default.c_str());
+    string path = Form("./../../../result/CB%d/WALL%d/ROB%d/WADC/%s/HV%d", CB, WALL,ROB, type_default.c_str(), HV);
 
     FileManager filemanager;
     filemanager.Createpath(path);
