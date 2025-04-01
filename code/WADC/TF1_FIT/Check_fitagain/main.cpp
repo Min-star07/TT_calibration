@@ -98,9 +98,9 @@ int main(int argc, char **argv) {
     int WALL = stoi(wall_default);
 
     // Construct file paths based on arguments
-    string file_led = Form("../../../../result/CB%d/data/WADC/%s/%s", CB, type_default.c_str(), file_led_default.c_str());
-    string file_ped = Form("../../../../result/CB%d/data/WADC/%s/%s", CB, type_default.c_str(), file_ped_default.c_str());
-    string path = Form("../../../../result/CB%d/WALL%d/ROB%d/WADC/%s/HV%d", CB, WALL, ROB, type_default.c_str(), HV);
+    string file_led = Form("./../../../result/CB%d/data/WADC/%s/%s", CB, type_default.c_str(), file_led_default.c_str());
+    string file_ped = Form("./../../../result/CB%d/data/WADC/%s/%s", CB, type_default.c_str(), file_ped_default.c_str());
+    string path = Form("./../../../result/CB%d/WALL%d/ROB%d/WADC/%s/HV%d", CB, WALL, ROB, type_default.c_str(), HV);
 
     // Apply custom style
     MyStyle style;

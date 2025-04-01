@@ -22,9 +22,6 @@ struct ROBConfig {
 struct Config {
     string file_led = "led_cCB-22_2024-01-16_20_37_hist.root";
     string file_ped = "ped_cCB-22_2024-01-16_20_37_hist.root";
-    string times = "1";
-    string xmin = "1";
-    string xmax = "1";
     string HV = "1";
     string type = "HV_cal";
     string path = "./";
@@ -75,13 +72,7 @@ void parseArguments(int argc, char** argv, Config& config) {
             config.file_led = argv[i + 1];
         } else if (arg == "-fd") {
             config.file_ped = argv[i + 1];
-        } else if (arg == "-t") {
-            config.times = argv[i + 1];
-        } else if (arg == "-left") {
-            config.xmin = argv[i + 1];
-        } else if (arg == "-right") {
-            config.xmax = argv[i + 1];
-        } else if (arg == "-v") {
+        }else if (arg == "-v") {
             config.HV = argv[i + 1];
         } else if (arg == "-type") {
             config.type = argv[i + 1];
@@ -96,7 +87,6 @@ void printConfig(const Config& config) {
     cout << "Configuration Parameters:\n";
     cout << "LED file: " << config.file_led << endl;
     cout << "PED file: " << config.file_ped << endl;
-    cout << "Times: " << config.times << endl;
     cout << "HV: " << config.HV << endl;
     cout << "Type: " << config.type << endl;
     cout << "path: " << config.path<< endl;
@@ -127,7 +117,7 @@ int main(int argc, char **argv) {
                         + " -FEB " + to_string(cfg.feb)
                         + " -fl " + config.file_led
                         + " -type " + config.type
-                        + " -v " + config.HV;
+                        + " -v " + config.HV
                         + " -w " + to_string(cfg.wall);
 
         // Print thread information and command

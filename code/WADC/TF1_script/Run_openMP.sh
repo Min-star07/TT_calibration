@@ -21,7 +21,16 @@ mode=WADC
 for file in "${filename_list[@]}"; do
     # First-time fit
     cd "$original_dir" || { echo "Failed to return to original directory"; exit 1; }
-    # cd ../TF1_FIT/Init || { echo "Directory not found"; exit 1; }
-    ./OpenMP_FIT -path ../TF1_FIT/Init -fl $filename_list -v 1 -m -type $type
+    path=../TF1_FIT/Init
+    ./OpenMP_FIT -path $path -fl $filename_list -v 1 -m $mode -type $type
+    # First-time fit
+    cd "$original_dir" || { echo "Failed to return to original directory"; exit 1; }
+    path=../TF1_FIT/Final
+    ./OpenMP_FIT -path $path -fl $filename_list -v 1 -m $mode -type $type
+
+    # First-time fit
+    cd "$original_dir" || { echo "Failed to return to original directory"; exit 1; }
+    path=../TF1_FIT/Check_fitagain
+    ./OpenMP_FIT -path $path -fl $filename_list -v 1 -m $mode -type $type
 
 done
