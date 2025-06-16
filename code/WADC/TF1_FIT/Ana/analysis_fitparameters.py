@@ -3,6 +3,8 @@ import numpy as np
 from matplotlib.backends.backend_pdf import PdfPages
 from scipy.optimize import curve_fit
 
+from matplotlib.font_manager import FontProperties
+
 
 # Define the double Gaussian function
 def gaussian(x, a1, b1, c1):
@@ -126,25 +128,37 @@ class Plotter:
         plt.close()
 
     def Q1_distri_hist2d(self, filepath, x, y):
+        """Create a 2D histogram plot with specific font settings."""
+        # Create a font property object
+        custom_font = FontProperties()
+        custom_font.set_family("Arial")
+        custom_font.set_size(12)
+
         """Create a 2D histogram plot."""
         numbers = np.array(y)
         # Reshape the data into a square array (8x8)
         data = numbers.reshape(8, 8)
 
         # Create the 2D heatmap
-        plt.figure(figsize=(10, 10))
+        plt.figure(figsize=(10, 10), dpi=300)
         plt.imshow(data, cmap="viridis", interpolation="nearest")
 
         # Annotate each cell with its value
         for i in range(data.shape[0]):
             for j in range(data.shape[1]):
                 plt.text(
-                    j, i, f"{data[i, j]:.1f}", ha="center", va="center", color="white"
+                    j,
+                    i,
+                    f"{data[i, j]:.1f}",
+                    ha="center",
+                    va="center",
+                    color="white",
+                    fontproperties=custom_font,
                 )
 
-        plt.xlabel("Channel")
-        plt.ylabel("Channel")
-        plt.title(self.title)
+        plt.xlabel("Channel", fontproperties=custom_font)
+        plt.ylabel("Channel", fontproperties=custom_font)
+        plt.title(self.title, fontproperties=custom_font)
 
         figname = f"{filepath}/{self.title}_hist2D.png"
         plt.savefig(figname)
